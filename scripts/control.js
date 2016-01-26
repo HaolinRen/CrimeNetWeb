@@ -120,14 +120,18 @@ var nodeControl = {
 
 var neo4j = {
     liens : ["LIEN_FINANCIER", "LIEN_RESEAU", "LIEN_JUJU", "LIEN_SANG","LIEN_SOUTIEN", "LIEN_CONNAISSANCE", "LIEN_SEXUEL", "LIEN_INCONNU"],
-
+    path : "http://localhost:7474/",
+    userName : "neo4j",
+    passWord : "root",
     post : function(cypher, params, callBack) {
+        getDBInfo();
         $.ajax({
             type: "POST",
-            url: "http://localhost:7474/db/data/cypher",
+            url: neo4j.path + "db/data/cypher",
             contentType:"application/json",
             beforeSend: function(xhr) {
-                xhr.setRequestHeader('Authorization', "Basic bmVvNGo6cm9vdA==");
+                var base64 = "Basic "+ btoa(neo4j.userName + ":" + neo4j.passWord);
+                xhr.setRequestHeader('Authorization', base64);
             },  
             data: JSON.stringify({ "query" : cypher, "params": paras}),
             success: function(data) {
@@ -297,147 +301,146 @@ function showGraph(graphData) {
         .text(function(d) { return '\u2002'+d.id; });
     }
 
-node.on("mouseover", function(d) {
-set_highlight(d);
-})
-.on("mousedown", function(d) { d3.event.stopPropagation();
-focus_node = d;
-set_focus(d)
-if (highlight_node === null) set_highlight(d)
+    node.on("mouseover", function(d) {
+        set_highlight(d);
+    })
+        .on("mousedown", function(d) { d3.event.stopPropagation();
+        focus_node = d;
+    set_focus(d)
+    if (highlight_node === null) set_highlight(d)
 
-}   ).on("mouseout", function(d) {
-exit_highlight();
+    }   ).on("mouseout", function(d) {
+    exit_highlight();
 
-}   );
+    }   );
 
-d3.select(window).on("mouseup",  
-function() {
-if (focus_node!==null)
-{
-focus_node = null;
-if (highlight_trans<1)
-{
+    d3.select(window).on("mouseup",  
+    function() {
+    if (focus_node!==null)
+    {
+        focus_node = null;
+    if (highlight_trans<1)
+    {
+        circle.style("opacity", 1);
+        text.style("opacity", 1);
+        link.style("opacity", 1);
+    }
+    }
 
-circle.style("opacity", 1);
-text.style("opacity", 1);
-link.style("opacity", 1);
-}
-}
+    if (highlight_node === null) exit_highlight();
+    });
 
-if (highlight_node === null) exit_highlight();
-});
+    function exit_highlight()
+    {
+    highlight_node = null;
+    if (focus_node===null)
+    {
+    svg.style("cursor","move");
+    if (highlight_color!="white")
+    {
+    circle.style(towhite, "white");
+    text.style("font-weight", "normal");
+    link.style("stroke", function(o) {return (isNumber(o.score) && o.score>=0)?color(o.score):default_link_color});
+    }
 
-function exit_highlight()
-{
-highlight_node = null;
-if (focus_node===null)
-{
-svg.style("cursor","move");
-if (highlight_color!="white")
-{
-circle.style(towhite, "white");
-text.style("font-weight", "normal");
-link.style("stroke", function(o) {return (isNumber(o.score) && o.score>=0)?color(o.score):default_link_color});
-}
+    }
+    }
 
-}
-}
+    function set_focus(d)
+    {   
+    if (highlight_trans<1)  {
+    circle.style("opacity", function(o) {
+    return isConnected(d, o) ? 1 : highlight_trans;
+    });
 
-function set_focus(d)
-{   
-if (highlight_trans<1)  {
-circle.style("opacity", function(o) {
-return isConnected(d, o) ? 1 : highlight_trans;
-});
+    text.style("opacity", function(o) {
+    return isConnected(d, o) ? 1 : highlight_trans;
+    });
 
-text.style("opacity", function(o) {
-return isConnected(d, o) ? 1 : highlight_trans;
-});
-
-link.style("opacity", function(o) {
-return o.source.index == d.index || o.target.index == d.index ? 1 : highlight_trans;
-});     
-}
-}
-
-
-function set_highlight(d)
-{
-svg.style("cursor","pointer");
-if (focus_node!==null) d = focus_node;
-highlight_node = d;
-
-if (highlight_color!="white")
-{
-circle.style(towhite, function(o) {
-return isConnected(d, o) ? highlight_color : "white";});
-text.style("font-weight", function(o) {
-return isConnected(d, o) ? "bold" : "normal";});
-link.style("stroke", function(o) {
-return o.source.index == d.index || o.target.index == d.index ? highlight_color : ((isNumber(o.score) && o.score>=0)?color(o.score):default_link_color);
-
-});
-}
-}
+    link.style("opacity", function(o) {
+        return o.source.index == d.index || o.target.index == d.index ? 1 : highlight_trans;
+    });     
+        }
+    }
 
 
-zoom.on("zoom", function() {
+    function set_highlight(d)
+    {
+    svg.style("cursor","pointer");
+    if (focus_node!==null) d = focus_node;
+    highlight_node = d;
 
-var stroke = nominal_stroke;
-if (nominal_stroke*zoom.scale()>max_stroke) stroke = max_stroke/zoom.scale();
-link.style("stroke-width",stroke);
-circle.style("stroke-width",stroke);
+    if (highlight_color!="white")
+    {
+    circle.style(towhite, function(o) {
+    return isConnected(d, o) ? highlight_color : "white";});
+    text.style("font-weight", function(o) {
+    return isConnected(d, o) ? "bold" : "normal";});
+    link.style("stroke", function(o) {
+    return o.source.index == d.index || o.target.index == d.index ? highlight_color : ((isNumber(o.score) && o.score>=0)?color(o.score):default_link_color);
 
-var base_radius = nominal_base_node_size;
-if (nominal_base_node_size*zoom.scale()>max_base_node_size) base_radius = max_base_node_size/zoom.scale();
-circle.attr("d", d3.svg.symbol()
-.size(function(d) { return Math.PI*Math.pow(size(d.size)*base_radius/nominal_base_node_size||base_radius,2); })
-.type(function(d) { return d.type; }))
-
-circle.attr("r", function(d) { return (size(d.size)*base_radius/nominal_base_node_size||base_radius); })
-if (!text_center) text.attr("dx", function(d) { return (size(d.size)*base_radius/nominal_base_node_size||base_radius); });
-
-var text_size = nominal_text_size;
-if (nominal_text_size*zoom.scale()>max_text_size) text_size = max_text_size/zoom.scale();
-text.style("font-size",text_size + "px");
-
-g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-});
-
-svg.call(zoom);     
-
-resize();
-window.focus();
-
-force.on("tick", function() {
-
-node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
-text.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
-
-link.attr("x1", function(d) { return d.source.x; })
-.attr("y1", function(d) { return d.source.y; })
-.attr("x2", function(d) { return d.target.x; })
-.attr("y2", function(d) { return d.target.y; });
-
-node.attr("cx", function(d) { return d.x; })
-.attr("cy", function(d) { return d.y; });
-});
-
-function resize() {
-var width = wsp.offsetWidth, height = wsp.offsetHeight;
-svg.attr("width", width).attr("height", height);
-
-force.size([force.size()[0]+(width-w)/zoom.scale(),force.size()[1]+(height-h)/zoom.scale()]).resume();
-w = width;
-h = height;
-}
-
-function isNumber(n) {
-return !isNaN(parseFloat(n)) && isFinite(n);
-}   
+    });
+    }
+    }
 
 
-}
+    zoom.on("zoom", function() {
+
+    var stroke = nominal_stroke;
+    if (nominal_stroke*zoom.scale()>max_stroke) stroke = max_stroke/zoom.scale();
+    link.style("stroke-width",stroke);
+    circle.style("stroke-width",stroke);
+
+    var base_radius = nominal_base_node_size;
+    if (nominal_base_node_size*zoom.scale()>max_base_node_size) base_radius = max_base_node_size/zoom.scale();
+    circle.attr("d", d3.svg.symbol()
+    .size(function(d) { return Math.PI*Math.pow(size(d.size)*base_radius/nominal_base_node_size||base_radius,2); })
+    .type(function(d) { return d.type; }))
+
+    circle.attr("r", function(d) { return (size(d.size)*base_radius/nominal_base_node_size||base_radius); })
+    if (!text_center) text.attr("dx", function(d) { return (size(d.size)*base_radius/nominal_base_node_size||base_radius); });
+
+    var text_size = nominal_text_size;
+    if (nominal_text_size*zoom.scale()>max_text_size) text_size = max_text_size/zoom.scale();
+    text.style("font-size",text_size + "px");
+
+    g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+    });
+
+    svg.call(zoom);     
+
+    resize();
+    window.focus();
+
+    force.on("tick", function() {
+
+    node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+    text.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+
+    link.attr("x1", function(d) { return d.source.x; })
+    .attr("y1", function(d) { return d.source.y; })
+    .attr("x2", function(d) { return d.target.x; })
+    .attr("y2", function(d) { return d.target.y; });
+
+    node.attr("cx", function(d) { return d.x; })
+    .attr("cy", function(d) { return d.y; });
+    });
+
+    function resize() {
+    var width = wsp.offsetWidth, height = wsp.offsetHeight;
+    svg.attr("width", width).attr("height", height);
+
+    force.size([force.size()[0]+(width-w)/zoom.scale(),force.size()[1]+(height-h)/zoom.scale()]).resume();
+    w = width;
+    h = height;
+    }
+
+    function isNumber(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+    }   
+
+
+    }
 
 document.getElementById("ps1").onclick = function() {
     var query = nodeControl.getLien();
@@ -449,5 +452,12 @@ document.getElementById("ps1").onclick = function() {
             showGraph(neo4j.getGraph(data));
         });
     }
+};
+
+function getDBInfo() {
+    neo4j.path = document.getElementById("dbp").value;
+    neo4j.userName = document.getElementById("dbuser").value;
+    neo4j.passWord = document.getElementById("dbpass").value;
 }
+
 
