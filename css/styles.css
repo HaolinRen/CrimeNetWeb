@@ -1,0 +1,93 @@
+#crimT {
+	margin-top: 15px;
+	margin-left: 20px;
+	margin-right: 50px;
+}
+
+.set_drawer {
+	margin-left: 15px;
+	width: 260px;
+}
+
+.confT1 {
+	margin-left: 10px;
+	margin-top: 40px;
+}
+
+#conf {
+	margin: 0px 5px 0px 5px;
+}
+
+.page-content {
+	margin: 20px;
+}
+
+#maincontent {
+	min-width: 600px;
+}
+
+
+#graph {
+	height: 500px;
+	
+	/*width: 400px;*/
+}
+
+.mdl-card__menu {
+	margin:10px;
+}
+
+#scroll-tab-1 {
+	height: 80%;
+}
+
+#graphControl {
+	margin-top: -15px;
+}
+
+#maincontent {
+	width: 75%;
+	min-width: 700px;
+	display: inline-block;
+}
+
+#ack {
+	color: #DC143C;
+}
+
+#paras {
+	width: 23%;
+	min-width: 200px;
+	max-width: 400px;
+	/*display: inline-block;*/
+	float: right;
+	vertical-align: top;
+	margin-left: 10px;
+}
+
+#para1 {
+	height: 300px;
+}
+
+#ginfo {
+	position: relative;
+}
+
+#mt {
+	margin: auto;  
+	position: absolute;
+	/*display: none;*/
+	left:0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+}
+
+.para {
+	width: 100%;
+	display: inline-block;
+	height: 300px;
+	vertical-align: top;
+	margin: 0px 0px 20px 0px;
+}
+
