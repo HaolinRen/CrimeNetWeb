@@ -20,7 +20,7 @@
   </header>
   <div class="mdl-layout__drawer">
     <nav class="mdl-navigation">
-      <span class="confT1">Setting</span>
+      <span class="mdl-layout-title" id="ctn">Connection</span>
       <form id="conf">
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
           <input class="mdl-textfield__input set_drawer" type="text" id="dbp" value="http://localhost:7474/">
@@ -35,11 +35,6 @@
           <label class="mdl-textfield__label set_drawer" for="dbpass">password</label>
         </div>
       </form>
-    <span class="mdl-layout-title">Connection</span>
-      <a class="mdl-navigation__link" href="">Link</a>
-      <a class="mdl-navigation__link" href="">Link</a>
-      <a class="mdl-navigation__link" href="">Link</a>
-      <a class="mdl-navigation__link" href="">Link</a>
     </nav>
   </div>
   <main class="mdl-layout__content noselect">
@@ -59,11 +54,53 @@
           </div>
         </div>
         <div id="paras">
+          <div class="mdl-shadow--2dp para" id="para0">
+            <div class="mdl-card__title parat" id="paraT0">
+              Nodes
+            </div>
+            <div class="mdl-card__actions mdl-card--border" id="pane0">
+              <label class="mdl-checkbox mdl-js-checkbox" for="checkbox-01">
+                <input type="checkbox" id="checkbox-01" class="mdl-checkbox__input lien" checked>
+                <span class="mdl-checkbox__label">Lien Financier</span>
+              </label>
+              <label class="mdl-checkbox mdl-js-checkbox" for="checkbox-02">
+                <input type="checkbox" id="checkbox-02" class="mdl-checkbox__input lien" unchecked>
+                <span class="mdl-checkbox__label">Lien Réseau</span>
+              </label>
+              <label class="mdl-checkbox mdl-js-checkbox" for="checkbox-03">
+                <input type="checkbox" id="checkbox-03" class="mdl-checkbox__input lien" unchecked>
+                <span class="mdl-checkbox__label">Lien Juju</span>
+              </label>
+              <label class="mdl-checkbox mdl-js-checkbox" for="checkbox-04">
+                <input type="checkbox" id="checkbox-04" class="mdl-checkbox__input lien" unchecked>
+                <span class="mdl-checkbox__label">Lien Sang</span>
+              </label>
+              <label class="mdl-checkbox mdl-js-checkbox" for="checkbox-05">
+                <input type="checkbox" id="checkbox-05" class="mdl-checkbox__input lien" unchecked>
+                <span class="mdl-checkbox__label">Lien Soutien</span>
+              </label>
+              <label class="mdl-checkbox mdl-js-checkbox" for="checkbox-06">
+                <input type="checkbox" id="checkbox-06" class="mdl-checkbox__input lien" unchecked>
+                <span class="mdl-checkbox__label">Lien Connnaissance</span>
+              </label>
+              <label class="mdl-checkbox mdl-js-checkbox" for="checkbox-07">
+                <input type="checkbox" id="checkbox-07" class="mdl-checkbox__input lien" unchecked>
+                <span class="mdl-checkbox__label">Lien Sexuel</span>
+              </label>
+              <label class="mdl-checkbox mdl-js-checkbox" for="checkbox-08">
+                <input type="checkbox" id="checkbox-08" class="mdl-checkbox__input lien" unchecked>
+                <span class="mdl-checkbox__label">Lien Inconnu</span>
+              </label>
+              <span class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="ps0">
+                Submit
+              </span>
+            </div>
+          </div>
           <div class="mdl-shadow--2dp para" id="para1">
-            <div class="mdl-card__title">
+            <div class="mdl-card__title parat" id="paraT1">
             Relationship
             </div>
-            <div class="mdl-card__actions mdl-card--border">
+            <div class="mdl-card__actions mdl-card--border" id="pane1">
               <label class="mdl-checkbox mdl-js-checkbox" for="checkbox-1">
                 <input type="checkbox" id="checkbox-1" class="mdl-checkbox__input lien" checked>
                 <span class="mdl-checkbox__label">Lien Financier</span>
@@ -96,20 +133,26 @@
                 <input type="checkbox" id="checkbox-8" class="mdl-checkbox__input lien" unchecked>
                 <span class="mdl-checkbox__label">Lien Inconnu</span>
               </label>
-              <div class="mdl-card__actions mdl-card--border">
-                <span class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="ps1">
+              <span class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="ps1">
                   Submit
-                </span>
-              </div>
+              </span>
             </div>
           </div>
           <div class="mdl-shadow--2dp para" id="para2">
-            <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-1">
-              <input type="checkbox" id="switch-1" class="mdl-switch__input" checked>
-              <span class="mdl-switch__label"></span>
-            </label>
-            <input class="mdl-slider mdl-js-slider" type="range"
-              min="0" max="100" value="25" tabindex="0">
+            <div class="mdl-card__title parat" id="paraT2">
+              configures
+            </div>
+            <div class="mdl-card__actions mdl-card--border" id="pane2">
+              <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-1">
+                <input type="checkbox" id="switch-1" class="mdl-switch__input" checked>
+                <span class="mdl-switch__label"></span>
+              </label>
+              <input class="mdl-slider mdl-js-slider" type="range"
+                min="0" max="100" value="25" tabindex="0">
+                <span class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="ps2">
+                  Submit
+              </span>
+              </div>
           </div>
         </div>
         

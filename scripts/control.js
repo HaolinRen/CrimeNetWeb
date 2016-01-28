@@ -171,6 +171,23 @@ var neo4j = {
     }
 }
 
+var panes = {
+    showingPane : "",
+    panes : {"paraT0":"pane0", "paraT1":"pane1", "paraT2":"pane2"},
+    changeShowingPane : function() {
+        if (this.id !== panes.showingPane) {
+            if (panes.showingPane !== "") {
+                utilObj.hidePara(panes.panes[panes.showingPane]);
+            }
+            panes.showingPane = this.id;
+            utilObj.showBlockPara(panes.panes[panes.showingPane]);
+        } else {
+            utilObj.hidePara(panes.panes[panes.showingPane]);
+            panes.showingPane = "";
+        };
+    }
+}
+
 function showGraph(graphData) {
     if (graphData.nodes.length == 0) {
         return 0;
@@ -307,10 +324,10 @@ function showGraph(graphData) {
         .on("mousedown", function(d) {
             d3.event.stopPropagation();
             focus_node = d;
-            set_focus(d)
+            set_focus(d);
             if (highlight_node === null) {
                 set_highlight(d)
-            })
+            }})
         .on("mouseout", function(d) {
             exit_highlight();
             });
@@ -457,4 +474,10 @@ function getDBInfo() {
     neo4j.passWord = document.getElementById("dbpass").value;
 }
 
+(function() {
+    utilObj.addEvent("paraT0", "click", panes.changeShowingPane);
+    utilObj.addEvent("paraT1", "click", panes.changeShowingPane);
+    utilObj.addEvent("paraT2", "click", panes.changeShowingPane);
+
+})()
 
