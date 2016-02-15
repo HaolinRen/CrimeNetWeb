@@ -17,6 +17,7 @@ var utilObj = {
             for (i = 0, len = obj.length; i < len; ++i) {
                 copy[i] = utilObj.clone(obj[i]);
             }
+            
             return copy;
         }
         if (obj instanceof Object) {
@@ -83,7 +84,7 @@ var utilObj = {
     },
     //add submit event listener to search request button
     addFormListener : function(divName, method) {
-        utilObj.addEvent(divName, "submit", function(event) {  
+        utilObj.addEvent(divName, "submit", function(event) {
             event.preventDefault();
             method(this.elements);
         })
@@ -132,7 +133,7 @@ var neo4j = {
             beforeSend: function(xhr) {
                 var base64 = "Basic "+ btoa(neo4j.userName + ":" + neo4j.passWord);
                 xhr.setRequestHeader('Authorization', base64);
-            },  
+            },
             data: JSON.stringify({ "query" : cypher, "params": paras}),
             success: function(data) {
                 callBack(data);
@@ -209,11 +210,11 @@ function showGraph(graphData) {
 
     var highlight_color = "blue";
     var highlight_trans = 0.1;
-      
+
     var size = d3.scale.pow().exponent(1)
                 .domain([3,100])
                 .range([8,24]);
-        
+
     var force = d3.layout.force()
                 .linkDistance(60)
                 .charge(-300)
@@ -264,7 +265,7 @@ function showGraph(graphData) {
                 .enter().append("line")
                 .attr("class", "link")
                 .style("stroke-width",nominal_stroke)
-                .style("stroke", function(d) { 
+                .style("stroke", function(d) {
                     if (isNumber(d.score) && d.score>=0) {
                         return color(d.score);
                     } else {
@@ -297,7 +298,7 @@ function showGraph(graphData) {
                     .attr("d", d3.svg.symbol()
                     .size(function(d) { return Math.PI*Math.pow(size(d.size)||nominal_base_node_size,2); })
                     .type(function(d) { return d.type; }))
-                    .style(tocolor, function(d) { 
+                    .style(tocolor, function(d) {
                         if (isNumber(d.score) && d.score>=0) return color(d.score);
                         else return default_node_color; })
                     .attr("r", function(d) { return size(d.size)||nominal_base_node_size; })
@@ -359,7 +360,7 @@ function showGraph(graphData) {
         }
     }
 
-    function set_focus(d) {   
+    function set_focus(d) {
         if (highlight_trans<1) {
             circle.style("opacity", function(o) {
                 return isConnected(d, o) ? 1 : highlight_trans;
@@ -422,7 +423,7 @@ function showGraph(graphData) {
         g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
     });
 
-    svg.call(zoom);     
+    svg.call(zoom);
 
     resize();
     window.focus();
@@ -480,4 +481,3 @@ function getDBInfo() {
     utilObj.addEvent("paraT2", "click", panes.changeShowingPane);
 
 })()
-
